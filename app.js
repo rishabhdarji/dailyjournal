@@ -3,6 +3,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const _= require("lodash");
 
 const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
 const aboutContent = 'Welcome to the "Daily Journal" website! This is a place where you can come to reflect on your daily thoughts, experiences, and emotions.'+
@@ -14,10 +15,7 @@ const aboutContent = 'Welcome to the "Daily Journal" website! This is a place wh
 const contactContent = "Welcome to our contact page! We appreciate your interest in our daily journal website."+
 "If you have any questions, comments, or concerns about our website or the journal entries that are written on it, please feel free to reach out to us using the form below. We will do our best to respond to all inquiries as promptly as possible."+
 "Please note that we are unable to respond to requests for personal journal entries or to provide specific information about individual contributors. If you have a question or concern about a specific journal entry, please use the comment section provided on that entry's page."+
-"We hope you enjoy reading our daily journal entries and we look forward to hearing from you!"
-
-"\nSincerely,"+
-
+"We hope you enjoy reading our daily journal entries and we look forward to hearing from you!"+"\nSincerely,"+
 "The Daily Journal Team"
 const posts = [];
 
@@ -33,7 +31,7 @@ app.get("/", function(req,res){
     homeStartingContent:homeStartingContent,
     posts:posts
   });
-})
+});
 
 app.get("/about", function(req,res){
   res.render("about",{aboutContent:aboutContent});
@@ -58,8 +56,19 @@ app.post("/compose", function(req,res){
 });
 
 
+app.get("/posts/:postName", function (req, res) {
+  posts.forEach(post => {
+    if (_.lowerCase(post.title) === _.lowerCase(req.params.postName)) {
+      res.render("post",{
+        blogTitle:post.title,
+        blogPost:post.content
+      });
+    } 
+  })
+});
 
 
-app.listen(3000, function() {
+
+app.listen(process.env.PORT || 3000, function() {
   console.log("Server started on port 3000");
 });
