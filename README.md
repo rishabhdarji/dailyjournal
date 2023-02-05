@@ -1,2 +1,2 @@
 # dailyjournal
-https://dailyjournal-fp0j.onrender.com/
+Visit https://dailyjournal-fp0j.onrender.com/
